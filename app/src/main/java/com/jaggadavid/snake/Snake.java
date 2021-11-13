@@ -42,15 +42,45 @@ public class Snake extends ArrayList<SnakeSegment> {
             SnakeSegment current = this.get(i);
             if (i==0){
                 //current.update(current.centerX()+current.dx*1, current.centerY()+current.dy*1);
-
-                if (current.centerX()>=canvas.getWidth()){
+                boolean turned = false;
+                if (current.centerX()- current.radius>=canvas.getWidth()){
                     current.dx=-current.dx;
+                    turned = true;
                 }
+                if (current.centerX()+ current.radius<=0){
+                    current.dx=-current.dx;
+                    turned = true;
+                }
+                if (current.centerY()- current.radius>=canvas.getHeight()){
+                    current.dy*=-1;
+                    turned = true;
+                }
+                if (current.centerY()+ current.radius<=0){
+                    current.dy*=-1;
+                    turned = true;
+                }
+                if (turned)
+                    current.turnPointList.add(new Tuple(current.centerX(), current.centerY(), current.dx, current.dy));
                 current.offset(current.dx,current.dy);
 
             } else {
                 SnakeSegment previous = this.get(i-1);
-                current.offset(previous.dx, previous.dy);
+                ArrayList<Tuple> turnList = previous.turnPointList;
+                if (turnList.size()>0) {
+                    Tuple tuple = turnList.get(0);
+                    if (current.centerX() == tuple.get(0) && current.centerY() == tuple.get(1)) {
+                        current.dx = tuple.get(2);
+                        current.dy = tuple.get(3);
+                        turnList.remove(tuple);
+                        current.turnPointList.add(new Tuple(current.centerX(), current.centerY(), current.dx, current.dy));
+                    }
+                }
+
+
+
+                current.offset(current.dx, current.dy);
+
+
             }
 
 
