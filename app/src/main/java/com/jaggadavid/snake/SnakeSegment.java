@@ -13,6 +13,7 @@ public class SnakeSegment extends RectF {
     int color;
     float dx, dy;
     float radius;
+
     ArrayList<Tuple> turnPointList = new ArrayList<Tuple>();
 
 
