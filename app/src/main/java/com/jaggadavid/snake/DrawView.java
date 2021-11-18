@@ -31,7 +31,7 @@ public class DrawView extends View {
 
         if (snake.update(canvas, apple)){
             snake.draw(canvas);
-            snake.addSegement();
+
             apple = new Sprite(width, height, rand);
             apple.draw(canvas);
             count++;

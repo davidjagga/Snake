@@ -14,7 +14,7 @@ public class SnakeSegment extends RectF {
     float dx, dy;
     float radius;
 
-    ArrayList<Tuple> turnPointList = new ArrayList<Tuple>();
+    public ArrayList<Tuple> turnPointList;
 
 
 
@@ -23,11 +23,12 @@ public class SnakeSegment extends RectF {
         this.dx = dx;
         this.dy = dy;
         this.color = color;
-        radius=(top-bottom)/2;
+        radius=top-bottom/2;
+        turnPointList = new ArrayList<Tuple>();
     }
 
-    public SnakeSegment(float cX, float cY){
-        this(cX-50,cY-50, cX+50, cY+50, 5f, 5f, Color.BLUE);
+    public SnakeSegment(float cX, float cY, float olddx, float olddy){
+        this(cX-50,cY-50, cX+50, cY+50, olddx, olddy, Color.BLUE);
 
     }
 
@@ -37,9 +38,10 @@ public class SnakeSegment extends RectF {
 
 
 
-    public void update(float newX, float newY) {
-        offsetTo(newX,newY);
+    public void setCenter(float cx, float cy){
+        offsetTo(cx-50, cy-50);
     }
+
 
 
 
