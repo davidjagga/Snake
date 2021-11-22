@@ -16,6 +16,8 @@ public class SnakeSegment extends RectF {
 
     public ArrayList<Tuple> turnPointList;
 
+    public Tuple pastPos;
+
 
 
     public SnakeSegment(float left, float top, float right, float bottom, float dx, float dy, int color) {
@@ -24,7 +26,9 @@ public class SnakeSegment extends RectF {
         this.dy = dy;
         this.color = color;
         radius=top-bottom/2;
+        pastPos = new Tuple((top+bottom)/2, (left+right)/2, dx, dy);
         turnPointList = new ArrayList<Tuple>();
+        turnPointList.add(pastPos);
     }
 
     public SnakeSegment(float cX, float cY, float olddx, float olddy){
