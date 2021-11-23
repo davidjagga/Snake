@@ -10,11 +10,13 @@ public class Snake extends ArrayList<SnakeSegment> {
 
     SnakeSegment head;
 
+    RectF freeSpace;
 
 
 
     public Snake() {
         head = new SnakeSegment();
+        freeSpace = new RectF(-40,-40,160,160);
         this.add(head);
 
 
@@ -42,12 +44,20 @@ public class Snake extends ArrayList<SnakeSegment> {
 
     }
 
-    public int update(Canvas canvas, Sprite apple) {
+    public int update(Canvas canvas, Sprite apple, ArrayList<Bomb> bombArrayList) {
         int touched = 0;
         if (RectF.intersects(head, apple)){
 
             addSegment();
             touched = 1;
+        }
+
+        for (Bomb bomb: bombArrayList){
+            if (RectF.intersects(head, bomb)) {
+
+
+                return 2;
+            }
         }
 
         for(int i=size()-1; i>=0; i--){
@@ -57,28 +67,28 @@ public class Snake extends ArrayList<SnakeSegment> {
             if (i==0){
                 //current.update(current.centerX()+current.dx*1, current.centerY()+current.dy*1);
                 boolean turned = false;
-                if (current.centerX()- current.radius>=canvas.getWidth()){
+                if (current.centerX() - current.radius>=canvas.getWidth()){
                     current.dx=-current.dx;
                     turned = true;
                     touched = 2;
                 }
-                if (current.centerX()+ current.radius<=0){
+                if (current.centerX() + current.radius<=0){
                     current.dx=-current.dx;
                     turned = true;
                     touched = 2;
                 }
-                if (current.centerY()- current.radius>=canvas.getHeight()){
+                if (current.centerY() - current.radius>=canvas.getHeight()){
                     current.dy*=-1;
                     turned = true;
                     touched = 2;
                 }
-                if (current.centerY()+ current.radius<=0){
+                if (current.centerY() + current.radius<=0){
                     current.dy*=-1;
                     turned = true;
                     touched = 2;
                 }
                 current.offset(current.dx,current.dy);
-
+                freeSpace.offset(current.dx, current.dy);
                 current.turnPointList.add(new Tuple(current.centerX(), current.centerY(), current.dx, current.dy));
                 if (current.turnPointList.size()>6){
                     current.turnPointList.remove(0);
