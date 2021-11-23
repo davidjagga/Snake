@@ -42,12 +42,12 @@ public class Snake extends ArrayList<SnakeSegment> {
 
     }
 
-    public boolean update(Canvas canvas, Sprite apple) {
-        boolean touched = false;
+    public int update(Canvas canvas, Sprite apple) {
+        int touched = 0;
         if (RectF.intersects(head, apple)){
 
             addSegment();
-            touched = true;
+            touched = 1;
         }
 
         for(int i=size()-1; i>=0; i--){
@@ -60,18 +60,22 @@ public class Snake extends ArrayList<SnakeSegment> {
                 if (current.centerX()- current.radius>=canvas.getWidth()){
                     current.dx=-current.dx;
                     turned = true;
+                    touched = 2;
                 }
                 if (current.centerX()+ current.radius<=0){
                     current.dx=-current.dx;
                     turned = true;
+                    touched = 2;
                 }
                 if (current.centerY()- current.radius>=canvas.getHeight()){
                     current.dy*=-1;
                     turned = true;
+                    touched = 2;
                 }
                 if (current.centerY()+ current.radius<=0){
                     current.dy*=-1;
                     turned = true;
+                    touched = 2;
                 }
                 current.offset(current.dx,current.dy);
 
@@ -137,6 +141,9 @@ public class Snake extends ArrayList<SnakeSegment> {
 
         head.turnPointList.add(new Tuple(head.centerX(), head.centerY(), head.dx, head.dy));
     }
+
+
+
 
 
 }
