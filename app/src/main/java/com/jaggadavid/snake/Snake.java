@@ -16,18 +16,8 @@ public class Snake extends ArrayList<SnakeSegment> {
     public Snake() {
         head = new SnakeSegment();
         this.add(head);
-        addSegment();
-        addSegment();
-        addSegment();
-        addSegment();
-        addSegment();
-        addSegment();
-        addSegment();
-        addSegment();
-        addSegment();
-        addSegment();
-        addSegment();
-        addSegment();
+
+
 
 
 
@@ -36,10 +26,11 @@ public class Snake extends ArrayList<SnakeSegment> {
 
     public SnakeSegment addSegment(){
         SnakeSegment last = this.get(size() - 1);
-        float x = last.centerX();
-        float y = last.centerY();
+        Tuple lastLocation = last.turnPointList.get(0);
+        float x = lastLocation.get(0);
+        float y = lastLocation.get(1);
 
-        SnakeSegment s = new SnakeSegment(x,y,last.dx, last.dy);
+        SnakeSegment s = new SnakeSegment(x,y,lastLocation.get(2), lastLocation.get(3));
 
         ArrayList<Tuple> turnList = new ArrayList<>();
         turnList.add(new Tuple(x,y,last.dx, last.dy));
@@ -82,19 +73,26 @@ public class Snake extends ArrayList<SnakeSegment> {
                     current.dy*=-1;
                     turned = true;
                 }
-                current.turnPointList.add(new Tuple(current.centerX(), current.centerY(), current.dx, current.dy));
                 current.offset(current.dx,current.dy);
+
+                current.turnPointList.add(new Tuple(current.centerX(), current.centerY(), current.dx, current.dy));
+                if (current.turnPointList.size()>6){
+                    current.turnPointList.remove(0);
+                }
+
 
             } else {
                 SnakeSegment previous = this.get(i-1);
                 ArrayList<Tuple> turnList = previous.turnPointList;
                 if (turnList.size()>=5) {
-                    Tuple tuple = turnList.get(turnList.size()-1);
+                    Tuple tuple = turnList.get(0);
                     current.dx = tuple.get(2);
                     current.dy = tuple.get(3);
-
-                    current.turnPointList.add(new Tuple(current.centerX(), current.centerY(), current.dx, current.dy));
                     current.setCenter(tuple.get(0), tuple.get(1));
+                    current.turnPointList.add(new Tuple(current.centerX(), current.centerY(), current.dx, current.dy));
+                    if (current.turnPointList.size()>6){
+                        current.turnPointList.remove(0);
+                    }
 
                     turnList.remove(tuple);
                 }
